@@ -14,10 +14,10 @@ import { ReservasModule } from './reservas/reservas.module';
         url: configService.get<string>('DATABASE_URL'),
         ssl: { rejectUnauthorized: false },
         autoLoadEntities: true,
-        synchronize: false, // Apagado por seguridad, las tablas ya están en Supabase
+        synchronize: false, 
       }),
     }),
-    ReservasModule, // Conectamos tu módulo de reservas
+    ReservasModule, 
   ],
 })
 export class AppModule {}

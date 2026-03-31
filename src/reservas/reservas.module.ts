@@ -24,7 +24,6 @@ import { ContactoServicio } from './entities/contacto_servicio.entity';
     ]),
   ],
   controllers: [ReservasController],
-  // Lo agregamos a los providers para que se pueda inyectar
   providers: [ReservasService, ReservasRepository], 
 })
 export class ReservasModule {}

@@ -22,7 +22,6 @@ export class Huesped {
   @Column({ length: 100, nullable: true })
   correo: string;
 
-  // Un huésped puede tener muchas reservas
   @OneToMany(() => Reserva, (reserva) => reserva.titular)
   reservas: Reserva[];
 }

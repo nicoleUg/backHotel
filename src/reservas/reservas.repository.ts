@@ -6,7 +6,6 @@ import { MoraCancelacion } from './entities/mora_cancelacion.entity';
 
 @Injectable()
 export class ReservasRepository {
-  // Inyectamos los repositorios genéricos de TypeORM AQUÍ, no en el servicio
   constructor(
     @InjectRepository(Reserva)
     private readonly reservaDb: Repository<Reserva>,
@@ -14,7 +13,6 @@ export class ReservasRepository {
     private readonly moraDb: Repository<MoraCancelacion>,
   ) {}
 
-  // Métodos específicos que tu servicio va a necesitar
   async buscarReservaPorId(id: number): Promise<Reserva | null> {
     return this.reservaDb.findOne({ where: { id } });
   }

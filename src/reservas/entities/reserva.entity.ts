@@ -44,16 +44,13 @@ export class Reserva {
   @JoinColumn({ name: 'titular_id' })
   titular: Huesped;
 
-  // 2. Relación con la Habitación (HU-02 y HU-05)
   @ManyToOne(() => Habitacion, (habitacion) => habitacion.reservas)
   @JoinColumn({ name: 'habitacion_id' })
   habitacion: Habitacion;
 
-  // 3. Relación con los Acompañantes 
   @OneToMany(() => Acompanante, (acompanante) => acompanante.reserva)
   acompanantes: Acompanante[];
 
-  // 4. Relación con la Mora Simple (Tu asignación individual HU-07)
   @OneToOne(() => MoraCancelacion, (mora) => mora.reserva)
   moraCancelacion: MoraCancelacion;
 }

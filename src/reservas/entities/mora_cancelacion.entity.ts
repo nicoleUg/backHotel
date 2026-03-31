@@ -15,7 +15,6 @@ export class MoraCancelacion {
   @Column({ name: 'monto_mora', type: 'decimal', precision: 10, scale: 2 })
   montoMora: number;
 
-  // Relación inversa hacia la reserva
   @OneToOne(() => Reserva, (reserva) => reserva.moraCancelacion)
   @JoinColumn({ name: 'reserva_id' })
   reserva: Reserva;

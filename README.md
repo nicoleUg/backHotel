@@ -112,13 +112,13 @@ backHotel/
 
 ### Caracteristicas clave implementadas
 
-- ✅ Entidades con `@Unique`, `@Check` y relaciones mapeadas.
-- ✅ Repositorio personalizado para logica de datos.
-- ✅ DTO con class-validator (IsInt, IsPositive).
-- ✅ Validacion global en main.ts (whitelist y forbidNonWhitelisted).
-- ✅ CORS habilitado para frontend.
-- ✅ Conexion pooled a Supabase con rejectUnauthorized: false.
-- ✅ Logica de mora: 50.00 si cancelacion <= 2 dias antes de ingreso.
+-Entidades con `@Unique`, `@Check` y relaciones mapeadas.
+- Repositorio personalizado para logica de datos.
+- DTO con class-validator (IsInt, IsPositive).
+- Validacion global en main.ts (whitelist y forbidNonWhitelisted).
+- CORS habilitado para frontend.
+- Conexion pooled a Supabase con rejectUnauthorized: false.
+- Logica de mora: 50.00 si cancelacion <= 2 dias antes de ingreso.
 
 ## Endpoint disponible
 
