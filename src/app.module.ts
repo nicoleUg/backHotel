@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReservasModule } from './reservas/reservas.module';
 import { HuespedesModule } from './huespedes/huespedes.module';
-
+import { ServiciosModule } from './servicios/servicios.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -20,6 +20,7 @@ import { HuespedesModule } from './huespedes/huespedes.module';
     }),
     ReservasModule, 
     HuespedesModule,
+    ServiciosModule,
   ],
 })
 export class AppModule {}

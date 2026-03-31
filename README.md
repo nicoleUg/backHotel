@@ -1,169 +1,97 @@
+
 # BackHotel API
 
-Backend para gestion de reservas de hotel con NestJS, TypeORM y PostgreSQL (Supabase).
+Backend para gestión de reservas de hotel con NestJS, TypeORM y PostgreSQL (Supabase).
+Este proyecto es un Prototipo Funcional (MVP) que cubre desde la HU-01 hasta la HU-07 del sistema operativo del hotel.
 
-## Tecnologias
+## Tecnologías
 
-- Node.js
+- Node.js (18+)
 - NestJS
 - TypeORM
 - PostgreSQL (Supabase)
 - class-validator y class-transformer
 
-## Requisitos
+## Requisitos y Configuración
 
-- Node.js 18+
-- npm 9+
-- Una base PostgreSQL en Supabase con el esquema de tablas ya creado
-
-## Instalacion
-
+1. Instalar dependencias:
 ```bash
 npm install
 ```
 
-## Variables de entorno
 
-1. Copiar `.env.example` a `.env`:
-```bash
-cp .env.example .env
-```
+## Patrones de Diseño Aplicados
 
-2. Editar `.env` con tus credenciales de Supabase:
-```env
-DATABASE_URL="postgresql://postgres.USUARIO:CLAVE@aws-X-region.pooler.supabase.com:6543/postgres?pgbouncer=true"
-DIRECT_URL="postgresql://postgres.USUARIO:CLAVE@aws-X-region.pooler.supabase.com:5432/postgres"
-```
+Para garantizar un código escalable y mantenible, se han implementado los siguientes patrones de diseño de software:
 
-Notas:
-- **Pooler (6543)**: Para la aplicacion en produccion, mejor rendimiento con conexiones reutilizables.
-- **Direct (5432)**: Para migraciones y tareas administrativas.
-- Si la clave contiene `@`, `:` o `#`, codificala en URL (e.g., `%40` para `@`).
-- **NO** subas `.env` al repositorio; solo `.env.example` con placeholders.
+* **MVC (Modelo-Vista-Controlador)**: Aplicado de forma transversal en todo el proyecto (HU-01 a HU-07). La lógica se separa en Controllers (gestión de rutas HTTP), Services (lógica de negocio) y Entities/Repositories (Modelos de base de datos).
+* **Factory Method (Fábrica)**: Aplicado específicamente en la **HU-05**. Se utiliza la clase estática `HabitacionFactory` para instanciar dinámicamente objetos de características (capacidad base, precio) dependiendo de la variante de la habitación seleccionada ('Suite', 'Simple', etc.). Esto evita quemar lógica condicional compleja en el servicio y cumple con el requerimiento arquitectónico de la historia.
+* **Repository Pattern**: Aplicado en el módulo de Reservas (`reservas.repository.ts`) para aislar las consultas complejas de TypeORM (como la detección de solapamiento de fechas usando QueryBuilder) fuera de la lógica de negocio pura.
 
-## Scripts
-
-```bash
-# Desarrollo
-npm run start:dev
-
-# Compilar
-npm run build
-
-# Produccion (requiere build previo)
-npm run start
-```
-
-## Estructura del proyecto
+## Estructura del Proyecto Actualizada
 
 ```text
 backHotel/
 ├── src/
-│   ├── app.module.ts                    # Módulo raíz con TypeORM y Config
-│   ├── main.ts                          # Entry point, valida DTOs con ValidationPipe y CORS
-│   └── reservas/
-│       ├── Reservas.controller.ts       # Endpoint POST /reservas/cancelar
-│       ├── reservas.service.ts          # Lógica de cancelación y cálculo de mora
-│       ├── reservas.repository.ts       # Query personalizado a BD
-│       ├── reservas.module.ts           # Importa todas las entidades
+│   ├── app.module.ts                    # 
+│   ├── main.ts                          # 
+│   ├── huespedes/                       # 
+│   │   ├── huespedes.controller.ts      # 
+│   │   ├── huespedes.service.ts         # 
+│   │   └── dto/crear-huesped.dto.ts     
+│   ├── servicios/                       # 
+│   │   └── servicios.controller.ts      # 
+│   └── reservas/                        # 
+│       ├── Reservas.controller.ts       # 
+│       ├── reservas.service.ts          # 
+│       ├── reservas.repository.ts       # 
+│       ├── patterns/
+│       │   └── habitacion.factory.ts    # 
 │       ├── dto/
-│       │   └── cancelar_reserva.dto.ts  # DTO con validación (reservaId: int+)
-│       └── entities/
-│           ├── reserva.entity.ts        # @Entity con relaciones y @Check de estado
-│           ├── huesped.entity.ts        # @Entity con @Unique compuesto (tipo + número)
-│           ├── habitacion.entity.ts     # @Entity con relación a tipo_habitacion
-│           ├── tipo_habitacion.entity.ts# @Entity catálogo de tipos
-│           ├── acompanante.entity.ts    # @Entity con ON DELETE CASCADE
-│           ├── mora_cancelacion.entity.ts # @Entity con @Unique reserva_id
-│           └── contacto_servicio.entity.ts # @Entity catálogo de contactos
-├── package.json                         # Scripts: start:dev, build, start
-├── package-lock.json                    # Lock de dependencias
-├── tsconfig.json                        # Target ES2017, outDir ./dist
-├── .env                                 # DATABASE_URL y DIRECT_URL
-├── .env.example                         # Plantilla para nuevos devs
-├── .gitignore                           # Excluye node_modules, dist, .env, logs
-└── README.md                            # Este archivo
+│       │   ├── crear-reserva.dto.ts     
+│       │   └── cancelar_reserva.dto.ts  
+│       └── entities/                    # 
+│           ├── reserva.entity.ts        
+│           ├── huesped.entity.ts        
+│           ├── habitacion.entity.ts     
+│           ├── tipo_habitacion.entity.ts# 
+│           ├── acompanante.entity.ts    
+│           ├── mora_cancelacion.entity.ts 
+│           └── contacto_servicio.entity.ts 
 ```
 
-### Archivos de configuracion clave
+## Endpoints y Casos de Uso (HUs)
 
-- **package.json**: Define scripts de ejecución y dependencias (NestJS, TypeORM, Postgres, validadores).
-- **tsconfig.json**: TypeScript apunta a ES2017, genera salida en `./dist`.
-- **.env**: Variables sensibles (no se sube a repositorio).
-- **.gitignore**: Excluye artifacts y secrets.
+### HU-01: Gestión de Huéspedes
+* `POST /huespedes`: Registra un nuevo huésped. Valida DTOs y rechaza documentos duplicados (Error 409).
+* `GET /huespedes`: Retorna la lista de huéspedes ordenados alfabéticamente.
 
-### Flujo de la aplicacion
+### HU-02 y HU-03: Creación y Consulta de Reservas
+* `GET /reservas`: Devuelve todas las reservas ordenadas cronológicamente (Incluye relaciones con Titular y Habitación).
+* `POST /reservas`: Crea una reserva aplicando las siguientes validaciones:
+   * Fecha de salida estrictamente mayor a la de ingreso.
+   * Lógica anti-solapamiento (impide fechas cruzadas en una misma habitación).
+   * Validación de capacidad máxima de personas vía Patrón Factory.
 
-1. **main.ts** inicia NestFactory y habilita ValidationPipe + CORS en puerto 3000.
-2. **app.module.ts**:
-   - Carga configs globales con ConfigModule.
-   - Conecta a PostgreSQL (Supabase) con TypeOrmModule.
-   - Importa ReservasModule.
-3. **reservas.module.ts**:
-   - Registra todas las entidades en TypeORM.
-   - Expone controlador y servicio.
-4. **Reservas.controller.ts** recibe POST /reservas/cancelar y valida el DTO.
-5. **reservas.service.ts** ejecuta logica de negocio:
-   - Busca reserva.
-   - Calcula dias de anticipacion.
-   - Asigna mora si corresponde.
-6. **reservas.repository.ts** ejecuta queries personalizadas (buscar, actualizar, guardar mora).
-7. Las **entities** definen el mapeo a tablas PostgreSQL con constraints y relaciones.
+### HU-04: Registrar Check-in
+* `PATCH /reservas/:id/checkin`: Cambia el estado a "Check In" y registra el `CURRENT_TIMESTAMP`. Bloquea intentos sobre reservas canceladas o ya iniciadas.
 
-### Caracteristicas clave implementadas
+### HU-06: Directorio de Servicios
+* `GET /servicios`: Retorna los contactos de las áreas de apoyo del hotel.
 
--Entidades con `@Unique`, `@Check` y relaciones mapeadas.
-- Repositorio personalizado para logica de datos.
-- DTO con class-validator (IsInt, IsPositive).
-- Validacion global en main.ts (whitelist y forbidNonWhitelisted).
-- CORS habilitado para frontend.
-- Conexion pooled a Supabase con rejectUnauthorized: false.
-- Logica de mora: 50.00 si cancelacion <= 2 dias antes de ingreso.
+### HU-07: Cancelación con Mora Simple (Asignación Individual)
+* `POST /reservas/cancelar`: Cancela una reserva confirmada. Si la anticipación es de 2 días o menos respecto a la fecha de ingreso, calcula e inserta automáticamente un castigo en la tabla `mora_cancelacion` por un monto fijo de $50.00.
 
-## Endpoint disponible
+## Scripts de Ejecución
 
-### Cancelar reserva
+```bash
+# Desarrollo local
+npm run start:dev
 
-- Metodo: `POST`
-- Ruta: `/reservas/cancelar`
-- Body JSON:
+# Compilar a JS
+npm run build
 
-```json
-{
-  "reservaId": 123
-}
+# Producción
+npm run start
 ```
-
-### Reglas de negocio actuales
-
-- Si la reserva no existe: retorna error 404.
-- Solo se cancelan reservas en estado `Confirmada`.
-- Si faltan 2 dias o menos para la fecha de ingreso, aplica mora de `50.00`.
-- Cuando aplica mora, se registra en `mora_cancelacion`.
-
-### Ejemplo de respuesta exitosa
-
-```json
-{
-  "mensaje": "Reserva cancelada correctamente",
-  "reservaId": 123,
-  "estado": "Cancelada",
-  "moraAplicada": true,
-  "montoMora": 50
-}
-```
-
-## Configuracion de base de datos
-
-Este proyecto espera el siguiente esquema en PostgreSQL:
-
-- `tipo_habitacion`
-- `habitacion`
-- `huesped`
-- `reserva`
-- `acompanante`
-- `mora_cancelacion`
-- `contacto_servicio`
-
-La aplicacion esta configurada con `synchronize: false`, por lo que no crea ni modifica tablas automaticamente.
 

@@ -3,7 +3,6 @@ import { Habitacion } from './habitacion.entity';
 
 @Entity('tipo_habitacion')
 export class TipoHabitacion {
-  // Usamos el nombre como identificador unico de tipo de habitacion
   @PrimaryColumn({ length: 100 })
   nombre: string;
 
