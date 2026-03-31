@@ -5,7 +5,7 @@ import { ReservasService } from './reservas.service';
 import { ReservasRepository } from './reservas.repository'; // <-- Lo importamos
 import { Reserva } from './entities/reserva.entity';
 import { MoraCancelacion } from './entities/mora_cancelacion.entity';
-import { Huesped } from './entities/huesped.entity';
+import { Huesped } from '../Huespedes/huesped.entity';
 import { Habitacion } from './entities/habitacion.entity';
 import { Acompanante } from './entities/acompanante.entity';
 import { TipoHabitacion } from './entities/tipo_habitacion.entity';
