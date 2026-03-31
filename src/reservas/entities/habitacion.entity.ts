@@ -10,11 +10,11 @@ export class Habitacion {
   @Column({ length: 20, unique: true })
   numero: string;
 
-  @Column({ name: 'tipo_habitacion_id' })
-  tipoHabitacionId: number;
+  @Column({ name: 'tipo_habitacion_nombre', length: 100 })
+  tipoHabitacionNombre: string;
 
   @ManyToOne(() => TipoHabitacion, (tipo) => tipo.habitaciones)
-  @JoinColumn({ name: 'tipo_habitacion_id' })
+  @JoinColumn({ name: 'tipo_habitacion_nombre' })
   tipoHabitacion: TipoHabitacion;
 
   @OneToMany(() => Reserva, (reserva) => reserva.habitacion)

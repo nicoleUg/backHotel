@@ -1,12 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 import { Habitacion } from './habitacion.entity';
 
 @Entity('tipo_habitacion')
 export class TipoHabitacion {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ length: 100 })
+  // Usamos el nombre como identificador unico de tipo de habitacion
+  @PrimaryColumn({ length: 100 })
   nombre: string;
 
   @Column({ name: 'capacidad_base' })
