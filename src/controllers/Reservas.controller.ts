@@ -16,7 +16,6 @@ export class ReservasController {
   }
   @Patch(':id/checkin')
   hacerCheckIn(@Param('id') id: string) {
-    // Convertimos el id de string a número con el signo '+'
     return this.reservasService.registrarCheckIn(+id);
   }
   @Post('cancelar')
