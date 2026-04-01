@@ -22,6 +22,7 @@ export class ReservasService {
     if (!habitacion) {
       throw new NotFoundException('La habitación seleccionada no existe.');
     }
+    
     const caracteristicas = HabitacionFactory.obtenerCaracteristicas(habitacion.tipoHabitacionNombre);
 
     if (dto.cantidadPersonas > caracteristicas.capacidadBase) {
