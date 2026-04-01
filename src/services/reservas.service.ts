@@ -25,7 +25,7 @@ export class ReservasService {
     const caracteristicas = HabitacionFactory.obtenerCaracteristicas(habitacion.tipoHabitacionNombre);
 
     if (dto.cantidadPersonas > caracteristicas.capacidadBase) {
-      throw new BadRequestException(`Aplicando patrón Factory: La habitación ${habitacion.tipoHabitacionNombre} solo permite hasta ${caracteristicas.capacidadBase} personas.`);
+      throw new BadRequestException(`La habitación ${habitacion.tipoHabitacionNombre} solo permite hasta ${caracteristicas.capacidadBase} personas.`);
     }
     if (dto.cantidadPersonas > habitacion.tipoHabitacion.capacidadBase) {
       throw new BadRequestException(`La habitación ${habitacion.numero} (${habitacion.tipoHabitacion.nombre}) solo permite hasta ${habitacion.tipoHabitacion.capacidadBase} personas.`);
