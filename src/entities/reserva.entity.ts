@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn, OneToMany, Check } from 'typeorm';
 import { MoraCancelacion } from './mora_cancelacion.entity';
-import { Huesped } from '../../Huespedes/huesped.entity';
+import { Huesped } from './huesped.entity';
 import { Habitacion } from './habitacion.entity';
 import { Acompanante } from './acompanante.entity';
 

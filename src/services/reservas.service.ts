@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
-import { ReservasRepository } from './reservas.repository';
-import { CrearReservaDto } from './dto/crear_reserva.dto';
-import { HabitacionFactory } from './patterns/habitacion.factory';
+import { ReservasRepository } from '../repositories/reservas.repository';
+import { CrearReservaDto } from '../dto/crear_reserva.dto';
+import { HabitacionFactory } from '../patterns/habitacion.factory';
 @Injectable()
 export class ReservasService {
   constructor(private readonly reservasRepository: ReservasRepository) {}

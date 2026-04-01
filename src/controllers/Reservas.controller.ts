@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
-import { ReservasService } from './reservas.service';
-import { CancelarReservaDto } from './dto/cancelar_reserva.dto';
-import { CrearReservaDto } from './dto/crear_reserva.dto';
+import { ReservasService } from '../services/reservas.service';
+import { CancelarReservaDto } from '../dto/cancelar_reserva.dto';
+import { CrearReservaDto } from '../dto/crear_reserva.dto';
 @Controller('reservas')
 export class ReservasController {
   constructor(private readonly reservasService: ReservasService) {}

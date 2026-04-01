@@ -1,8 +1,8 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Huesped } from './huesped.entity';
-import { CrearHuespedDto } from './dto/crear_huesped.dto';
+import { Huesped } from '../entities/huesped.entity';
+import { CrearHuespedDto } from '../dto/crear_huesped.dto';
 
 @Injectable()
 export class HuespedesService {

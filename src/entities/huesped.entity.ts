@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Unique } from 'typeorm';
-import { Reserva } from '../reservas/entities/reserva.entity';
+import { Reserva } from './reserva.entity';
 
 @Entity('huesped')
 @Unique('huesped_documento_unico', ['tipoDocumento', 'numeroDocumento'])

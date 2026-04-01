@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ReservasModule } from './reservas/reservas.module';
-import { HuespedesModule } from './huespedes/huespedes.module';
-import { ServiciosModule } from './servicios/servicios.module';
+import { ReservasModule } from './modules/reservas.module';
+import { HuespedesModule } from './modules/huespedes.module';
+import { ContactoServicioModule } from './modules/contacto_servicio.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -20,7 +20,7 @@ import { ServiciosModule } from './servicios/servicios.module';
     }),
     ReservasModule, 
     HuespedesModule,
-    ServiciosModule,
+    ContactoServicioModule,
   ],
 })
 export class AppModule {}

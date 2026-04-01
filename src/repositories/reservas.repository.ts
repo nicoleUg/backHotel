@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Reserva } from './entities/reserva.entity';
-import { MoraCancelacion } from './entities/mora_cancelacion.entity';
-import { Habitacion } from './entities/habitacion.entity';
+import { Reserva } from '../entities/reserva.entity';
+import { MoraCancelacion } from '../entities/mora_cancelacion.entity';
+import { Habitacion } from '../entities/habitacion.entity';
 @Injectable()
 export class ReservasRepository {
   constructor(
