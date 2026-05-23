@@ -4,7 +4,7 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
@@ -12,7 +12,9 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(3000);
-  Logger.log(`Servidor corriendo en: http://localhost:3000`);
+  const PUERTO = 3000;
+  await app.listen(PUERTO);
+  Logger.log(`Servidor corriendo en: http://localhost:${PUERTO}`);
+  //refactor code smell para el 3000 declarando que es 
 }
 bootstrap();

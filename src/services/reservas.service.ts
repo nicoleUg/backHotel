@@ -4,7 +4,7 @@ import { CrearReservaDto } from '../dto/crear_reserva.dto';
 import { HabitacionFactory } from '../patterns/habitacion.factory';
 @Injectable()
 export class ReservasService {
-  constructor(private readonly reservasRepository: ReservasRepository) {}
+  constructor(private readonly reservasRepository: ReservasRepository) { }
 
   async listarReservas() {
     return this.reservasRepository.obtenerTodas();
@@ -13,7 +13,7 @@ export class ReservasService {
   async crearReserva(dto: CrearReservaDto) {
     const fechaIngreso = new Date(dto.fechaReservaInicio);
     const fechaSalida = new Date(dto.fechaReservaSalida);
-    
+
     if (fechaSalida <= fechaIngreso) {
       throw new BadRequestException('La fecha de salida debe ser estrictamente posterior a la fecha de ingreso.');
     }
@@ -22,7 +22,7 @@ export class ReservasService {
     if (!habitacion) {
       throw new NotFoundException('La habitación seleccionada no existe.');
     }
-    
+
     const caracteristicas = HabitacionFactory.obtenerCaracteristicas(habitacion.tipoHabitacionNombre);
 
     if (dto.cantidadPersonas > caracteristicas.capacidadBase) {
@@ -88,17 +88,23 @@ export class ReservasService {
 
     const fechaHoy = new Date();
     const fechaIngreso = new Date(reserva.fechaReservaInicio);
-    
+
     const diferenciaMilisegundos = fechaIngreso.getTime() - fechaHoy.getTime();
-    const MILLISEGUNDOS_POR_DIA = 1000 * 60 * 60 * 24;
-    const diasAnticipacion = Math.ceil(diferenciaMilisegundos / MILLISEGUNDOS_POR_DIA);
+    const MILISEGUNDOS = 1000;
+    const SEGUNDOS = 60;
+    const MINUTOS = 60;
+    const HORAS_AL_DIA = 24;
+    const MILLISEGUNDOS_POR_DIA = MILISEGUNDOS * SEGUNDOS * MINUTOS * HORAS_AL_DIA;
+    const LIMITE_DIAS_ANTICIPACION = 2;
+    const MONTO_MORA_POR_CANCELACION = 50.00;
+    const diasAnticipacion = Math.ceil(diferenciaMilisegundos / MILLISEGUNDOS_POR_DIA); //ya refactorizado el code smell
 
     await this.reservasRepository.actualizarEstadoReserva(reserva, 'Cancelada');
 
     let montoMora = 0;
-    
-    if (diasAnticipacion <= 2) {
-      montoMora = 50.00;
+
+    if (diasAnticipacion <= LIMITE_DIAS_ANTICIPACION) {
+      montoMora = MONTO_MORA_POR_CANCELACION;
       await this.reservasRepository.guardarMora(reserva.id, montoMora, fechaHoy);
     }
 
