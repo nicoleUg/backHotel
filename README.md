@@ -1,103 +1,72 @@
+# Documentación del Backend - Sistema de Gestión Hotelera
 
-# BackHotel API
+## Descripción General
+Este repositorio contiene el código fuente del backend para el sistema de gestión de reservas de hotel. El proyecto ha sido desarrollado siguiendo una arquitectura escalable y aplicando principios sólidos de ingeniería de software para garantizar su mantenibilidad a largo plazo.
 
-Backend para gestión de reservas de hotel con NestJS, TypeORM y PostgreSQL (Supabase).
-Este proyecto es un Prototipo Funcional (MVP) que cubre desde la HU-01 hasta la HU-07 del sistema operativo del hotel.
+## Stack Tecnológico
+El proyecto está construido sobre las siguientes tecnologías y herramientas:
+- Framework Principal: NestJS (Node.js)
+- Lenguaje de Programación: TypeScript
+- Mapeo Objeto-Relacional (ORM): TypeORM
+- Motor de Base de Datos: PostgreSQL
+- Validación de Datos: class-validator y class-transformer
+- Entorno de Pruebas Unitarias y Cobertura: Jest
+- Análisis Estático de Código: ESLint
 
-## Tecnologías
+## Historias de Usuario (HU) Implementadas
 
-- Node.js (18+)
-- NestJS
-- TypeORM
-- PostgreSQL (Supabase)
-- class-validator y class-transformer
+El sistema backend provee los servicios necesarios para cumplir con los siguientes requerimientos de negocio, documentados mediante Historias de Usuario:
 
-## Requisitos y Configuración
+### HU-01: Gestión de Huéspedes
+Permite el registro de nuevos huéspedes validando la unicidad de sus documentos de identidad y proporciona un listado general de los clientes registrados ordenados alfabéticamente.
 
-1. Instalar dependencias:
+### HU-02 y HU-03: Creación y Consulta de Reservas
+Gestiona el ciclo de vida inicial de las reservas. Aplica validaciones de negocio estrictas, tales como:
+- Validación de coherencia cronológica (la fecha de salida debe ser estrictamente posterior a la fecha de ingreso).
+- Prevención de solapamiento de fechas para evitar asignar una misma habitación a múltiples titulares simultáneamente.
+- Validación de capacidad máxima de personas según el tipo de habitación seleccionada.
+
+### HU-04: Registro de Check-in
+Procesa la llegada del huésped actualizando el estado de la reserva a "Check In" y registrando la fecha y hora exacta de la operación. Previene inconsistencias al bloquear intentos de check-in sobre reservas previamente iniciadas o canceladas.
+
+### HU-05: Asignación de Características de Habitación
+Implementa el patrón de diseño Factory Method para asignar dinámicamente precios referenciales y capacidades base dependiendo de la variante de la habitación (Simple, Suite, Doble Matrimonial, Doble con camas individuales), promoviendo la escalabilidad del modelo de datos.
+
+### HU-06: Directorio de Servicios
+Provee acceso mediante endpoints de lectura a la información de contacto de las distintas áreas operativas y de apoyo del hotel.
+
+### HU-07: Cancelación y Penalizaciones
+Gestiona la cancelación de reservas previamente confirmadas. Incluye la lógica de negocio para calcular e insertar automáticamente una penalización económica en caso de que la cancelación se realice con un margen igual o menor a dos días de anticipación respecto a la fecha de ingreso programada.
+
+## Instrucciones de Configuración y Ejecución
+
+1. Instalación de dependencias:
 ```bash
 npm install
 ```
 
-
-## Patrones de Diseño Aplicados
-
-Para garantizar un código escalable y mantenible, se han implementado los siguientes patrones de diseño de software:
-
-* **MVC (Modelo-Vista-Controlador)**: Aplicado de forma transversal en todo el proyecto. La lógica se separa en carpetas dedicadas: `controllers` (gestión de rutas HTTP), `services` (lógica de negocio) y `entities`/`repositories` (Modelos de base de datos).
-* **Factory Method (Fábrica)**: Aplicado específicamente en la **HU-05**. Se utiliza la clase estática `HabitacionFactory` para instanciar dinámicamente objetos de características (capacidad base, precio) dependiendo de la variante de la habitación seleccionada ('Suite', 'Simple', etc.). Esto evita quemar lógica condicional compleja en el servicio y cumple con el requerimiento arquitectónico de la historia.
-* **Repository Pattern**: Aplicado en el módulo de Reservas (`reservas.repository.ts`) para aislar las consultas complejas de TypeORM (como la detección de solapamiento de fechas usando QueryBuilder) fuera de la lógica de negocio pura.
-
-## Estructura del Proyecto Actualizada
-
-La estructura actual sigue una organización por tipo de archivo, promoviendo la cohesión y la claridad:
-
-```text
-src/
-├── controllers/                # Controladores (capa de entrada HTTP)
-│   ├── huespedes.controller.ts
-│   ├── Reservas.controller.ts
-│   └── contacto_servicio.controller.ts
-├── services/                   # Lógica de negocio
-│   ├── huespedes.service.ts
-│   ├── reservas.service.ts
-│   └── contacto_servicio.service.ts
-├── modules/                    # Módulos de NestJS
-│   ├── app.module.ts
-│   ├── huespedes.module.ts
-│   ├── reservas.module.ts
-│   └── contacto_servicio.module.ts
-├── entities/                   # Entidades de TypeORM
-│   ├── acompanante.entity.ts
-│   ├── contacto_servicio.entity.ts
-│   ├── habitacion.entity.ts
-│   ├── huesped.entity.ts
-│   ├── mora_cancelacion.entity.ts
-│   ├── reserva.entity.ts
-│   └── tipo_habitacion.entity.ts
-├── dto/                        # Data Transfer Objects
-│   ├── cancelar_reserva.dto.ts
-│   ├── crear_huesped.dto.ts
-│   └── crear_reserva.dto.ts
-├── patterns/                   # Patrones de diseño (e.g., Factory)
-│   └── habitacion.factory.ts
-├── repositories/               # Repositorios (consultas complejas)
-│   └── reservas.repository.ts
-└── main.ts                     # Archivo de arranque
-```
-
-## Endpoints y Casos de Uso (HUs)
-
-### HU-01: Gestión de Huéspedes
-* `POST /huespedes`: Registra un nuevo huésped. Valida DTOs y rechaza documentos duplicados (Error 409).
-* `GET /huespedes`: Retorna la lista de huéspedes ordenados alfabéticamente.
-
-### HU-02 y HU-03: Creación y Consulta de Reservas
-* `GET /reservas`: Devuelve todas las reservas ordenadas cronológicamente (Incluye relaciones con Titular y Habitación).
-* `POST /reservas`: Crea una reserva aplicando las siguientes validaciones:
-   * Fecha de salida estrictamente mayor a la de ingreso.
-   * Lógica anti-solapamiento (impide fechas cruzadas en una misma habitación).
-   * Validación de capacidad máxima de personas vía Patrón Factory.
-
-### HU-04: Registrar Check-in
-* `PATCH /reservas/:id/checkin`: Cambia el estado a "Check In" y registra el `CURRENT_TIMESTAMP`. Bloquea intentos sobre reservas canceladas o ya iniciadas.
-
-### HU-06: Directorio de Servicios
-* `GET /contacto-servicio`: Retorna los contactos de las áreas de apoyo del hotel.
-
-### HU-07: Cancelación con Mora Simple (Asignación Individual)
-* `POST /reservas/cancelar`: Cancela una reserva confirmada. Si la anticipación es de 2 días o menos respecto a la fecha de ingreso, calcula e inserta automáticamente un castigo en la tabla `mora_cancelacion` por un monto fijo de $50.00.
-
-## Scripts de Ejecución
-
+2. Ejecución en entorno de desarrollo:
 ```bash
-# Desarrollo local
 npm run start:dev
-
-# Compilar a JS
-npm run build
-
-# Producción
-npm run start
 ```
 
+3. Compilación del proyecto para producción:
+```bash
+npm run build
+```
+
+4. Ejecución de pruebas unitarias y generación del reporte de cobertura:
+```bash
+npm run test:coverage
+```
+
+5. Ejecución del análisis estático de código (ESLint):
+Para identificar problemas de código en la consola:
+```bash
+npx eslint src
+```
+
+Para generar un reporte HTML del análisis estático:
+```bash
+npx eslint src -f html -o reporte-eslint.html
+```

@@ -3,24 +3,33 @@ export interface IHabitacionCaracteristicas {
   precioReferencial: number;
 }
 
+const CAPACIDAD_SIMPLE = 1;
+const PRECIO_SIMPLE = 50.00;
+const CAPACIDAD_SUITE = 2;
+const PRECIO_SUITE = 150.00;
+const CAPACIDAD_DOBLE_MAT = 2;
+const PRECIO_DOBLE_MAT = 90.00;
+const CAPACIDAD_DOBLE_IND = 2;
+const PRECIO_DOBLE_IND = 80.00;
+//refactor code smell para la clase habitacion ya declarando que es cada cosa
 class HabitacionSimple implements IHabitacionCaracteristicas {
-  capacidadBase = 1;
-  precioReferencial = 50.00;
+  capacidadBase = CAPACIDAD_SIMPLE;
+  precioReferencial = PRECIO_SIMPLE;
 }
 
 class HabitacionSuite implements IHabitacionCaracteristicas {
-  capacidadBase = 2;
-  precioReferencial = 150.00;
+  capacidadBase = CAPACIDAD_SUITE;
+  precioReferencial = PRECIO_SUITE;
 }
 
 class HabitacionDobleMatrimonial implements IHabitacionCaracteristicas {
-  capacidadBase = 2;
-  precioReferencial = 90.00;
+  capacidadBase = CAPACIDAD_DOBLE_MAT;
+  precioReferencial = PRECIO_DOBLE_MAT;
 }
 
 class HabitacionDobleIndividuales implements IHabitacionCaracteristicas {
-  capacidadBase = 2;
-  precioReferencial = 80.00;
+  capacidadBase = CAPACIDAD_DOBLE_IND;
+  precioReferencial = PRECIO_DOBLE_IND;
 }
 
 export class HabitacionFactory {
