@@ -33,4 +33,36 @@ describe('ReservasService', () => {
     await expect(reservasService.crearReserva(dto)).rejects.toThrow(BadRequestException);
     await expect(reservasService.crearReserva(dto)).rejects.toThrow('La fecha de salida debe ser estrictamente posterior a la fecha de ingreso.');
   });
+
+
+  describe('cancelarConMora', () => {
+    it('debe aplicar mora de 50 si se cancela con 2 días o menos de anticipación', async () => {
+      // Arrange: Configuramos con un dia de antelacion
+      const fechaManana = new Date();
+      fechaManana.setDate(fechaManana.getDate() + 1);
+
+      const reservaMock = {
+        id: 1,
+        estado: 'Confirmada',
+        fechaReservaInicio: fechaManana.toISOString(),
+      };
+
+      reservasRepositoryMock.buscarReservaPorId.mockResolvedValue(reservaMock as any);
+      reservasRepositoryMock.actualizarEstadoReserva.mockResolvedValue(true as any);
+      reservasRepositoryMock.guardarMora.mockResolvedValue(true as any);
+
+      // Act: metodo que se refactorizo
+      const resultado = await reservasService.cancelarConMora(1);
+
+      // Assert: Verificamos la reserva se cancelo y se aplicó la mora correctamente
+      expect(resultado.estado).toBe('Cancelada');
+      expect(resultado.moraAplicada).toBe(true);
+      expect(resultado.montoMora).toBe(50.00);
+      expect(reservasRepositoryMock.guardarMora).toHaveBeenCalledWith(
+        1,
+        50.00,
+        expect.any(Date)
+      );
+    });
+  });
 });
