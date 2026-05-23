@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +13,6 @@ async function bootstrap() {
   app.enableCors();
 
   await app.listen(3000);
-  console.log(`Servidor corriendo en: http://localhost:3000`);
+  Logger.log(`Servidor corriendo en: http://localhost:3000`);
 }
 bootstrap();

@@ -90,7 +90,8 @@ export class ReservasService {
     const fechaIngreso = new Date(reserva.fechaReservaInicio);
     
     const diferenciaMilisegundos = fechaIngreso.getTime() - fechaHoy.getTime();
-    const diasAnticipacion = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+    const MILLISEGUNDOS_POR_DIA = 1000 * 60 * 60 * 24;
+    const diasAnticipacion = Math.ceil(diferenciaMilisegundos / MILLISEGUNDOS_POR_DIA);
 
     await this.reservasRepository.actualizarEstadoReserva(reserva, 'Cancelada');
 
