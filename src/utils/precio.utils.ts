@@ -13,3 +13,13 @@ export function calcularCobroPersonasExtra(personasRegistradas: number, capacida
   const personasExtra = Math.max(0, personasRegistradas - capacidadBase);
   return personasExtra * TARIFA_PERSONA_EXTRA;
 }
+
+export function calcularRecargoLateCheckout(horasRetraso: number, tarifaBase: number): number {
+  if (horasRetraso > 4) {
+    return tarifaBase;
+  }
+  if (horasRetraso > 0) {
+    return horasRetraso * 15;
+  }
+  return 0;
+}

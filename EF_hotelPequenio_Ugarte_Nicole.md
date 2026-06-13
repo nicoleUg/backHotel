@@ -183,7 +183,7 @@ export function calcularCobroPersonasExtra(personasRegistradas: number, capacida
 
 **CA elegido:**Si el retraso es de 1 a 4 horas, se cobra 15bs por cada hora. Si el retraso es mayor a 4 horas, el sistema cobra automáticamente el equivalente a una noche completa de tarifa base.
 
-**Commit 1 — Rojo** [`874b718`](https://github.com/nicoleUg/backHotel/commit/874b718b420f081068aa1d8318e8118c17c611c3):
+**Commit 1 — Rojo** [`1291bff`](https://github.com/nicoleUg/backHotel/commit/1291bff18a6176070c3a39de50fdee883e53c742):
 ```
 test: [HU-10] agregar test para calculo de recargo por late check-out
 ```
@@ -206,13 +206,16 @@ describe('calcularRecargoLateCheckout', () => {
 
 **Commit 2 — Verde** [`524408b`](https://github.com/nicoleUg/backHotel/commit/524408b909f7733c6c4dc44f41d9c936ad2cb5f4):
 ```
-feat: [HU-09] implementar calcularCobroPersonasExtra
+feat: [HU-10] implementar calcularRecargoLateCheckout
 ```
 Código mínimo para hacer pasar el test:
 ``` typescript
-export function calcularCobroPersonasExtra(personas: number, capacidad: number): number {
-  if (personas > capacidad) {
-    return (personas - capacidad) * 20;
+export function calcularRecargoLateCheckout(horasRetraso: number, tarifaBase: number): number {
+  if (horasRetraso > 4) {
+    return tarifaBase;
+  }
+  if (horasRetraso > 0) {
+    return horasRetraso * 15;
   }
   return 0;
 }
@@ -220,7 +223,7 @@ export function calcularCobroPersonasExtra(personas: number, capacidad: number):
 
 > Captura del test pasando:
 
-![Test verde](capturas/hotel-tdd2-verde.png)
+![Test verde](capturas/hotel-tdd3-verde.png)
 
 ---
 
