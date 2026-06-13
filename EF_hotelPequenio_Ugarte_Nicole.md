@@ -37,23 +37,28 @@
 
 ### Ciclo TDD — Prueba 1
 
-**HU:** [HU-XX] [título]
-> Como [rol] quiero [acción] para [beneficio]
+**HU:** [HU-08] Descuento por Larga Estadía
+> Como administrador quiero aplicar un descuento automático del 10% sobre la tarifa total para las reservas de 7 noches o más, incentivando estadías largas.
 
-**CA elegido:** [texto del criterio de aceptación]
+**CA elegido:**Dados el número de días de estadía y el precio por día, si los días son mayores o iguales a 7, el sistema debe retornar el total con un 10% de descuento aplicado.
 
 **Commit 1 — Rojo** [`a1b2c3d`](https://github.com/usuario/repo/commit/a1b2c3d):
 ```
-test: [HU-XX] agregar test para [CA]
+test: [HU-08] agregar test para calculo de descuento por larga estadia
 ```
 Test escrito (sin el código que lo pase aún):
-```csharp / typescript
-// snippet del test
+```typescript
+describe('calcularTotalConDescuento', () => {
+  it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
+    const total = calcularTotalConDescuento(7, 100);
+    expect(total).toBe(630);
+  });
+});
 ```
 
 > Captura del test fallando o error de compilación:
 
-![Test rojo](capturas/[proyecto]-tdd1-rojo.png)
+![Test rojo](capturas/hotel-tdd1-rojo.png)
 
 ---
 
