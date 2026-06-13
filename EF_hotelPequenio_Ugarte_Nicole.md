@@ -271,7 +271,7 @@ Mínimo 3 nuevos (adicionales a los del EC2).
 |---|---|---|---|
 | 1 | Inseguridad de Tipos (Uso abusivo de any)| [`ecb3ab1`](https://github.com/nicoleUg/backHotel/commit/ecb3ab14794f3604b20eb1707e48317a574cb0f4) | Antes: Uso de as any para saltar validaciones de Jest. → Después: Tipado estricto de Mocks usando Partial<Record>. |
 | 2 | Ejecución Duplicada en Aserciones| [`d6357f7`](https://github.com/nicoleUg/backHotel/commit/d6357f7550076883fe1511cf8cb6d1f2b81217e6) | Antes: Llamado asíncrono repetido crearReserva para asertar el error. → Después: Validación de tipo y mensaje en una sola ejecución. |
-| 3 | Magic Numbers en pruebas | [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) | [Antes: Valor de mora "50.00" repetido en aserciones. → Después: Reemplazo por constante MONTO_MORA_ESPERADO] |
+| 3 | Magic Numbers en pruebas | [`b135a4c`](https://github.com/nicoleUg/backHotel/commit/b135a4c9566b3181b617635cff09b7f9b02849e5) | [Antes: Valor de mora "50.00" repetido en aserciones. → Después: Reemplazo por constante MONTO_MORA_ESPERADO] |
 
 ### Detalle — Smell 1: Inseguridad de Tipos (Uso abusivo de any)
 
