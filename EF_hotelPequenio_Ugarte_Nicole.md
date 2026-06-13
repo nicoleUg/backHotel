@@ -113,7 +113,7 @@ export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: num
 
 **CA elegido:**Si se registran más personas que la capacidad base, el sistema cobrará 20.00 bolivianos por cada persona adicional. Si no la supera, el cobro extra es 0.
 
-**Commit 1 — Rojo** [`a53374e`](https://github.com/nicoleUg/backHotel/commit/a53374ef3eea9d4287ade7a5191d370e31a47b61):
+**Commit 1 — Rojo** [`874b718`](https://github.com/nicoleUg/backHotel/commit/874b718b420f081068aa1d8318e8118c17c611c3):
 ```
 test: [HU-09] agregar test para cobro de huespedes adicionales
 ```
@@ -136,22 +136,21 @@ describe('calcularCobroPersonasExtra', () => {
 
 **Commit 2 — Verde** [`4020710`](https://github.com/nicoleUg/backHotel/commit/40207103cee47e4caf5a3574ba5102e4fcfc7611):
 ```
-test: [HU-09] agregar test para cobro de huespedes adicionales
+feat: [HU-09] implementar calcularCobroPersonasExtra
 ```
 Código mínimo para hacer pasar el test:
 ``` typescript
-export function calcularTotalConDescuento(dias: number, precioPorDia: number): number {
-  const total = dias * precioPorDia;
-  if (dias >= 7) {
-    return total - (total * 0.10);
+export function calcularCobroPersonasExtra(personas: number, capacidad: number): number {
+  if (personas > capacidad) {
+    return (personas - capacidad) * 20;
   }
-  return total;
+  return 0;
 }
 ```
 
 > Captura del test pasando:
 
-![Test verde](capturas/hotel-tdd1-verde.png)
+![Test verde](capturas/hotel-tdd2-verde.png)
 
 ---
 
@@ -236,37 +235,77 @@ Mínimo 3 nuevos (adicionales a los del EC2).
 
 | # | Historia de Usuario | Criterio de Aceptación | Prueba que valida ese CA | Commit |
 |---|---|---|---|---|
-| 1 | [HU título] | [Dado/Cuando/Entonces] | [NombrePrueba_Escenario_Resultado] | [`a1b2c3d`](https://github.com/usuario/repo/commit/a1b2c3d) |
-| 2 | [HU título] | [Dado/Cuando/Entonces] | [NombrePrueba_Escenario_Resultado] | [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e) |
+| 1 | [HU-08] Descuento Larga Estadía | Dado días de estadía / Cuando son >= 7 / Entonces descuenta 10% | calcularTotalConDescuento_EstadiaLarga_AplicaDescuento | [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136) |
+| 2 | [HU-09] Cobro por Personas Extra | Dado nro personas / Cuando supera base / Entonces cobra 20bs por extra | calcularCobroPersonasExtra_ExcedeBase_CobraDiferencia | [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e) |
 | 3 | [HU título] | [Dado/Cuando/Entonces] | [NombrePrueba_Escenario_Resultado] | [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) |
 
-### Cadena 1 — [Nombre HU]
+### Cadena 1 — [HU-08] Descuento por Larga Estadía
 
 **Historia de Usuario:**
-> Como [rol] quiero [acción] para [beneficio]
+> Como administrador quiero aplicar un descuento automático del 10% sobre la tarifa total para las reservas de 7 noches o más como incentivo a estadías largas.
 
 **Criterio de Aceptación elegido:**
-> Dado [contexto] / Cuando [acción] / Entonces [resultado esperado]
+> Dada una reserva procesada / Cuando se constata que la cantidad de noches es de 7 o más / Entonces la función retorna el costo total menos el 10% de descuento.
 
 **Prueba que valida este CA:**
-```csharp / typescript
-[Fact / test]
-public void Metodo_Escenario_ResultadoEsperado()
-{
-    // Arrange — setup del contexto del CA
-    // Act — ejecutar la acción del CA
-    // Assert — verificar el resultado del CA
-}
+```typescript
+it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
+    // Arrange
+    const diasEstadia = 7;
+    const precioBase = 100;
+    
+    // Act
+    const totalPagar = calcularTotalConDescuento(diasEstadia, precioBase);
+    
+    // Assert
+    expect(totalPagar).toBe(630);
+});
 ```
 
 ---
 
 ### Cadena 2 — [Nombre HU]
+**Historia de Usuario:**
+> Como administrador quiero aplicar un descuento automático del 10% sobre la tarifa total para las reservas de 7 noches o más como incentivo a estadías largas.
 
-> Mismo formato.
+**Criterio de Aceptación elegido:**
+> Dada una reserva procesada / Cuando se constata que la cantidad de noches es de 7 o más / Entonces la función retorna el costo total menos el 10% de descuento.
 
+**Prueba que valida este CA:**
+```typescript
+it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
+    // Arrange
+    const diasEstadia = 7;
+    const precioBase = 100;
+    
+    // Act
+    const totalPagar = calcularTotalConDescuento(diasEstadia, precioBase);
+    
+    // Assert
+    expect(totalPagar).toBe(630);
+});
+```
 ---
 
 ### Cadena 3 — [Nombre HU]
+ 
+**Historia de Usuario:**
+> Como administrador quiero aplicar un descuento automático del 10% sobre la tarifa total para las reservas de 7 noches o más como incentivo a estadías largas.
 
-> Mismo formato.
+**Criterio de Aceptación elegido:**
+> Dada una reserva procesada / Cuando se constata que la cantidad de noches es de 7 o más / Entonces la función retorna el costo total menos el 10% de descuento.
+
+**Prueba que valida este CA:**
+```typescript
+it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
+    // Arrange
+    const diasEstadia = 7;
+    const precioBase = 100;
+    
+    // Act
+    const totalPagar = calcularTotalConDescuento(diasEstadia, precioBase);
+    
+    // Assert
+    expect(totalPagar).toBe(630);
+});
+```

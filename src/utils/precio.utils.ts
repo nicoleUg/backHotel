@@ -7,3 +7,9 @@ export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: num
     ? totalBase * (1 - TASA_DESCUENTO) 
     : totalBase;
 }
+export function calcularCobroPersonasExtra(personas: number, capacidad: number): number {
+  if (personas > capacidad) {
+    return (personas - capacidad) * 20;
+  }
+  return 0;
+}
