@@ -12,10 +12,10 @@
 
 > Captura del proyecto corriendo con datos reales:
 
-![Deploy en producción](capturas/hotel-deploy.png)
-![Deploy en producción](capturas/hotel-deploy2.png)
-![Deploy en producción](capturas/hotel-deploy3.png)
-![Deploy en producción](capturas/hotel-deploy4.png)
+![Deploy en producción](capturashotel/hotel-deploy.png)
+![Deploy en producción](capturashotel/hotel-deploy2.png)
+![Deploy en producción](capturashotel/hotel-deploy3.png)
+![Deploy en producción](capturashotel/hotel-deploy4.png)
 
 
 
@@ -31,7 +31,7 @@
 
 > Captura del reporte de cobertura antes de escribir pruebas nuevas:
 
-![Cobertura inicial](capturas/hotel-cobertura-inicial.png)
+![Cobertura inicial](capturashotel/hotel-cobertura-inicial.png)
 
 ---
 
@@ -58,7 +58,7 @@ describe('calcularTotalConDescuento', () => {
 
 > Captura del test fallando o error de compilación:
 
-![Test rojo](capturas/hotel-tdd1-rojo.png)
+![Test rojo](capturashotel/hotel-tdd1-rojo.png)
 
 ---
 
@@ -79,7 +79,7 @@ export function calcularTotalConDescuento(dias: number, precioPorDia: number): n
 
 > Captura del test pasando:
 
-![Test verde](capturas/hotel-tdd1-verde.png)
+![Test verde](capturashotel/hotel-tdd1-verde.png)
 
 ---
 
@@ -102,7 +102,7 @@ export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: num
 
 > Captura del test aún pasando después del refactor:
 
-![Test post-refactor](capturas/hotel-tdd1-refactor.png)
+![Test post-refactor](capturashotel/hotel-tdd1-refactor.png)
 
 ---
 
@@ -130,7 +130,7 @@ describe('calcularCobroPersonasExtra', () => {
 
 > Captura del test fallando o error de compilación:
 
-![Test rojo](capturas/hotel-tdd2-rojo.png)
+![Test rojo](capturashotel/hotel-tdd2-rojo.png)
 
 ---
 
@@ -150,7 +150,7 @@ export function calcularCobroPersonasExtra(personas: number, capacidad: number):
 
 > Captura del test pasando:
 
-![Test verde](capturas/hotel-tdd2-verde.png)
+![Test verde](capturashotel/hotel-tdd2-verde.png)
 
 ---
 
@@ -172,7 +172,7 @@ export function calcularCobroPersonasExtra(personasRegistradas: number, capacida
 
 > Captura del test aún pasando después del refactor:
 
-![Test post-refactor](capturas/hotel-tdd2-refactor.png)
+![Test post-refactor](capturashotel/hotel-tdd2-refactor.png)
 
 ---
 
@@ -200,7 +200,7 @@ describe('calcularRecargoLateCheckout', () => {
 
 > Captura del test fallando o error de compilación:
 
-![Test rojo](capturas/hotel-tdd3-rojo.png)
+![Test rojo](capturashotel/hotel-tdd3-rojo.png)
 
 ---
 
@@ -223,7 +223,7 @@ export function calcularRecargoLateCheckout(horasRetraso: number, tarifaBase: nu
 
 > Captura del test pasando:
 
-![Test verde](capturas/hotel-tdd3-verde.png)
+![Test verde](capturashotel/hotel-tdd3-verde.png)
 
 ---
 
@@ -248,7 +248,7 @@ export function calcularRecargoLateCheckout(horasRetraso: number, tarifaDiariaBa
 ```
 > Captura del test pasando despues del refactor:
 
-![Test refactor](capturas/hotel-tdd3-refactor.png)
+![Test refactor](capturashotel/hotel-tdd3-refactor.png)
 ---
 
 ### Cobertura final
@@ -257,7 +257,7 @@ export function calcularRecargoLateCheckout(horasRetraso: number, tarifaDiariaBa
 
 > Captura del reporte de cobertura final:
 
-![Cobertura final](capturas/hotel-cobertura-final.png)
+![Cobertura final](capturashotel/hotel-cobertura-final.png)
 
 > Antes la cobertura era menor a 50 porque los unit test era priorizando los riesgos por casos criticos ahora es 57.02% porque tambien se vio de agregar nuevas funcionalidades
 
