@@ -8,6 +8,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/services/**/*.ts',
     'src/patterns/**/*.ts',
+    'src/utils/**/*.ts',
     '!src/**/*.module.ts',
     '!src/**/*.dto.ts',
     '!src/**/*.entity.ts',

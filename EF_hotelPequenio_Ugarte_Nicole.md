@@ -24,7 +24,7 @@
 
 ## Sección 2 — Pruebas con TDD + cobertura
 
-### Cobertura inicial (0%)
+### Cobertura inicial (42.3%)
 
 **Herramienta:** Jest comando npm run test:coverage
 
@@ -229,29 +229,37 @@ export function calcularRecargoLateCheckout(horasRetraso: number, tarifaBase: nu
 
 **Commit 3 — Refactor** [`5099f44`](https://github.com/nicoleUg/backHotel/commit/5099f44f2e5d5b815e1219580e03a1506c8bec52):
 ```
-refactor: [HU-09] limpiar y usar constante para tarifa de persona extra y funcion math.max
+refactor: [HU-10] extraer limites de horas y tarifa por hora a constantes
 ```
 Cambios aplicados:
 ```typescript
-const TARIFA_PERSONA_EXTRA = 20.00;
+const LIMITE_HORAS_PARA_DIA_COMPLETO = 4;
+const TARIFA_POR_HORA_RETRASO = 15.00;
 
-export function calcularCobroPersonasExtra(personasRegistradas: number, capacidadBase: number): number {
-  const personasExtra = Math.max(0, personasRegistradas - capacidadBase);
-  return personasExtra * TARIFA_PERSONA_EXTRA;
+export function calcularRecargoLateCheckout(horasRetraso: number, tarifaDiariaBase: number): number {
+  if (horasRetraso <= 0) return 0;
+  
+  if (horasRetraso > LIMITE_HORAS_PARA_DIA_COMPLETO) {
+    return tarifaDiariaBase;
+  }
+  
+  return horasRetraso * TARIFA_POR_HORA_RETRASO;
 }
 ```
+> Captura del test pasando despues del refactor:
 
+![Test refactor](capturas/hotel-tdd3-refactor.png)
 ---
 
 ### Cobertura final
 
-**Cobertura alcanzada:** X%
+**Cobertura alcanzada:** 57.02%
 
 > Captura del reporte de cobertura final:
 
-![Cobertura final](capturas/[proyecto]-cobertura-final.png)
+![Cobertura final](capturas/hotel-cobertura-final.png)
 
-> Si la cobertura es <50%, pegar aquí la justificación enviada al docente:
+> Antes la cobertura era menor a 50 porque los unit test era priorizando los riesgos por casos criticos ahora es 57.02% porque tambien se vio de agregar nuevas funcionalidades
 
 ---
 
