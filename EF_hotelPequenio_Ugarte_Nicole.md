@@ -62,7 +62,7 @@ describe('calcularTotalConDescuento', () => {
 
 ---
 
-**Commit 2 — Verde** [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e):
+**Commit 2 — Verde** [`4020710`](https://github.com/nicoleUg/backHotel/commit/40207103cee47e4caf5a3574ba5102e4fcfc7611):
 ```
 feat: [HU-08] implementar calcularTotalConDescuento
 ```
@@ -85,16 +85,24 @@ export function calcularTotalConDescuento(dias: number, precioPorDia: number): n
 
 **Commit 3 — Refactor** [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f):
 ```
-refactor: [HU-XX] limpiar [aspecto mejorado]
+refactor: [HU-08] limpiar y extraer limites de descuento a constantes en precio.utils
 ```
 Cambios aplicados:
-```csharp / typescript
-// snippet mejorado
+``` typescript
+const LIMITE_DIAS_DESCUENTO = 7;
+const TASA_DESCUENTO = 0.10;
+
+export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: number): number {
+  const totalBase = diasEstadia * tarifaDiaria;
+  return diasEstadia >= LIMITE_DIAS_DESCUENTO 
+    ? totalBase * (1 - TASA_DESCUENTO) 
+    : totalBase;
+}
 ```
 
 > Captura del test aún pasando después del refactor:
 
-![Test post-refactor](capturas/[proyecto]-tdd1-refactor.png)
+![Test post-refactor](capturas/hotel-tdd1-refactor.png)
 
 ---
 
