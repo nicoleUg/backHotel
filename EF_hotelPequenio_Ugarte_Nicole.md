@@ -134,7 +134,7 @@ describe('calcularCobroPersonasExtra', () => {
 
 ---
 
-**Commit 2 — Verde** [`4020710`](https://github.com/nicoleUg/backHotel/commit/40207103cee47e4caf5a3574ba5102e4fcfc7611):
+**Commit 2 — Verde** [`524408b`](https://github.com/nicoleUg/backHotel/commit/524408b909f7733c6c4dc44f41d9c936ad2cb5f4):
 ```
 feat: [HU-09] implementar calcularCobroPersonasExtra
 ```
@@ -156,24 +156,23 @@ export function calcularCobroPersonasExtra(personas: number, capacidad: number):
 
 **Commit 3 — Refactor** [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136):
 ```
-refactor: [HU-08] limpiar y extraer limites de descuento a constantes en precio.utils
+refactor: [HU-09] limpiar y usar constante para tarifa de persona extra y funcion math.max
 ```
 Cambios aplicados:
-``` typescript
-const LIMITE_DIAS_DESCUENTO = 7;
-const TASA_DESCUENTO = 0.10;
+```typescript
+const TARIFA_PERSONA_EXTRA = 20.00;
 
-export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: number): number {
-  const totalBase = diasEstadia * tarifaDiaria;
-  return diasEstadia >= LIMITE_DIAS_DESCUENTO 
-    ? totalBase * (1 - TASA_DESCUENTO) 
-    : totalBase;
+export function calcularCobroPersonasExtra(personasRegistradas: number, capacidadBase: number): number {
+  const personasExtra = Math.max(0, personasRegistradas - capacidadBase);
+  return personasExtra * TARIFA_PERSONA_EXTRA;
 }
 ```
 
+
+
 > Captura del test aún pasando después del refactor:
 
-![Test post-refactor](capturas/hotel-tdd1-refactor.png)
+![Test post-refactor](capturas/hotel-tdd2-refactor.png)
 
 ---
 
@@ -264,25 +263,25 @@ it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
 
 ---
 
-### Cadena 2 — [Nombre HU]
+### Cadena 2 — [HU-09] Cobro por Personas Extra
 **Historia de Usuario:**
-> Como administrador quiero aplicar un descuento automático del 10% sobre la tarifa total para las reservas de 7 noches o más como incentivo a estadías largas.
+> Como recepcionista quiero que el sistema calcule automáticamente un cobro adicional si la cantidad de huéspedes supera la capacidad base de la habitación, sin exceder el límite máximo.
 
 **Criterio de Aceptación elegido:**
-> Dada una reserva procesada / Cuando se constata que la cantidad de noches es de 7 o más / Entonces la función retorna el costo total menos el 10% de descuento.
+> Dado el cierre de reserva / Cuando se registran más personas que la capacidad base / Entonces el módulo financiero suma 20 bs multiplicados por la cantidad excedente.
 
 **Prueba que valida este CA:**
 ```typescript
-it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
+it('debe cobrar 20 bolivianos por cada persona extra sobre la capacidad base', () => {
     // Arrange
-    const diasEstadia = 7;
-    const precioBase = 100;
-    
+    const totalPersonas = 4;
+    const capacidadBase = 2;
+
     // Act
-    const totalPagar = calcularTotalConDescuento(diasEstadia, precioBase);
-    
+    const cobroAdicional = calcularCobroPersonasExtra(totalPersonas, capacidadBase);
+
     // Assert
-    expect(totalPagar).toBe(630);
+    expect(cobroAdicional).toBe(40);
 });
 ```
 ---
