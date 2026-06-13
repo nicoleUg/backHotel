@@ -42,7 +42,7 @@
 
 **CA elegido:**Dados el número de días de estadía y el precio por día, si los días son mayores o iguales a 7, el sistema debe retornar el total con un 10% de descuento aplicado.
 
-**Commit 1 — Rojo** [`a1b2c3d`](https://github.com/usuario/repo/commit/a1b2c3d):
+**Commit 1 — Rojo** [`a53374e`](https://github.com/nicoleUg/backHotel/commit/a53374ef3eea9d4287ade7a5191d370e31a47b61):
 ```
 test: [HU-08] agregar test para calculo de descuento por larga estadia
 ```
@@ -64,16 +64,22 @@ describe('calcularTotalConDescuento', () => {
 
 **Commit 2 — Verde** [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e):
 ```
-feat: [HU-XX] implementar [método] para pasar test
+feat: [HU-08] implementar calcularTotalConDescuento
 ```
 Código mínimo para hacer pasar el test:
-```csharp / typescript
-// snippet del código implementado
+``` typescript
+export function calcularTotalConDescuento(dias: number, precioPorDia: number): number {
+  const total = dias * precioPorDia;
+  if (dias >= 7) {
+    return total - (total * 0.10);
+  }
+  return total;
+}
 ```
 
 > Captura del test pasando:
 
-![Test verde](capturas/[proyecto]-tdd1-verde.png)
+![Test verde](capturas/hotel-tdd1-verde.png)
 
 ---
 
