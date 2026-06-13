@@ -4,7 +4,7 @@ import { ReservasRepository } from '../repositories/reservas.repository';
 
 describe('ReservasService', () => {
   let reservasService: ReservasService;
-  let reservasRepositoryMock: jest.Mocked<ReservasRepository>;
+let reservasRepositoryMock: Partial<Record<keyof ReservasRepository, jest.Mock>>;
 
   beforeEach(() => {
     reservasRepositoryMock = {
@@ -16,11 +16,10 @@ describe('ReservasService', () => {
       registrarCheckIn: jest.fn(),
       actualizarEstadoReserva: jest.fn(),
       guardarMora: jest.fn(),
-    } as any;
+    };
 
-    reservasService = new ReservasService(reservasRepositoryMock);
+    reservasService = new ReservasService(reservasRepositoryMock as unknown as ReservasRepository);
   });
-
   it('debe lanzar BadRequestException si la fecha de salida es anterior a la fecha de ingreso', async () => {
     const dto = {
       titularId: 1,
@@ -47,10 +46,9 @@ describe('ReservasService', () => {
         fechaReservaInicio: fechaManana.toISOString(),
       };
 
-      reservasRepositoryMock.buscarReservaPorId.mockResolvedValue(reservaMock as any);
-      reservasRepositoryMock.actualizarEstadoReserva.mockResolvedValue(true as any);
-      reservasRepositoryMock.guardarMora.mockResolvedValue(true as any);
-
+      reservasRepositoryMock.buscarReservaPorId!.mockResolvedValue(reservaMock);
+      reservasRepositoryMock.actualizarEstadoReserva!.mockResolvedValue(undefined);
+      reservasRepositoryMock.guardarMora!.mockResolvedValue(undefined);
       // Act: metodo que se refactorizo
       const resultado = await reservasService.cancelarConMora(1);
 

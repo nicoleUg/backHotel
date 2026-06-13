@@ -276,13 +276,49 @@ Mínimo 3 nuevos (adicionales a los del EC2).
 ### Detalle — Smell 1: [Tipo]
 
 **Código antes:**
-```csharp / typescript
-// código con el smell
+``` typescript
+let reservasService: ReservasService;
+  let reservasRepositoryMock: jest.Mocked<ReservasRepository>;
+
+  beforeEach(() => {
+    reservasRepositoryMock = {
+      obtenerTodas: jest.fn(),
+      buscarHabitacion: jest.fn(),
+      existeSolapamiento: jest.fn(),
+      crear: jest.fn(),
+      buscarReservaPorId: jest.fn(),
+      registrarCheckIn: jest.fn(),
+      actualizarEstadoReserva: jest.fn(),
+      guardarMora: jest.fn(),
+    } as any;
+    //...
+      reservasRepositoryMock.buscarReservaPorId.mockResolvedValue(reservaMock as any);
+
 ```
 
 **Código después:**
-```csharp / typescript
-// código corregido
+```typescript
+let reservasRepositoryMock: Partial<Record<keyof ReservasRepository, jest.Mock>>;
+
+  beforeEach(() => {
+    reservasRepositoryMock = {
+      obtenerTodas: jest.fn(),
+      buscarHabitacion: jest.fn(),
+      existeSolapamiento: jest.fn(),
+      crear: jest.fn(),
+      buscarReservaPorId: jest.fn(),
+      registrarCheckIn: jest.fn(),
+      actualizarEstadoReserva: jest.fn(),
+      guardarMora: jest.fn(),
+    };
+
+    reservasService = new ReservasService(reservasRepositoryMock as unknown as ReservasRepository);
+  });
+  //...
+      reservasRepositoryMock.buscarReservaPorId!.mockResolvedValue(reservaMock);
+      reservasRepositoryMock.actualizarEstadoReserva!.mockResolvedValue(undefined);
+      reservasRepositoryMock.guardarMora!.mockResolvedValue(undefined);
+
 ```
 
 ---
