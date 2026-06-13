@@ -28,9 +28,9 @@ let reservasRepositoryMock: Partial<Record<keyof ReservasRepository, jest.Mock>>
       fechaReservaSalida: '2026-06-10T10:00:00Z', // Salida anterior al ingreso
       cantidadPersonas: 2
     };
-
-    await expect(reservasService.crearReserva(dto)).rejects.toThrow(BadRequestException);
-    await expect(reservasService.crearReserva(dto)).rejects.toThrow('La fecha de salida debe ser estrictamente posterior a la fecha de ingreso.');
+await expect(reservasService.crearReserva(dto as any)).rejects.toThrow(
+  new BadRequestException('La fecha de salida debe ser estrictamente posterior a la fecha de ingreso.')
+);
   });
 
 

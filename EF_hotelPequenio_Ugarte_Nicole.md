@@ -269,11 +269,11 @@ Mínimo 3 nuevos (adicionales a los del EC2).
 
 | # | Tipo | Commit | Descripción |
 |---|---|---|---|
-| 1 | [Tipo] | [`a1b2c3d`](https://github.com/usuario/repo/commit/a1b2c3d) | [Antes: X → Después: Y] |
-| 2 | [Tipo] | [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e) | [Antes: X → Después: Y] |
-| 3 | [Tipo] | [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) | [Antes: X → Después: Y] |
+| 1 | Inseguridad de Tipos (Uso abusivo de any)| [`a1b2c3d`](https://github.com/usuario/repo/commit/a1b2c3d) | Antes: Uso de as any para saltar validaciones de Jest. → Después: Tipado estricto de Mocks usando Partial<Record>. |
+| 2 | Ejecución Duplicada en Aserciones| [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e) | Antes: Llamado asíncrono repetido crearReserva para asertar el error. → Después: Validación de tipo y mensaje en una sola ejecución. |
+| 3 | Magic Numbers en pruebas | [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) | [Antes: X → Después: Y] |
 
-### Detalle — Smell 1: [Tipo]
+### Detalle — Smell 1: Inseguridad de Tipos (Uso abusivo de any)
 
 **Código antes:**
 ``` typescript
@@ -323,9 +323,20 @@ let reservasRepositoryMock: Partial<Record<keyof ReservasRepository, jest.Mock>>
 
 ---
 
-### Detalle — Smell 2: [Tipo]
+### Detalle — Smell 2: Ejecución Duplicada en Aserciones
 
-> Mismo formato.
+**Código antes:**
+```typescript
+await expect(reservasService.crearReserva(dto)).rejects.toThrow(BadRequestException);
+await expect(reservasService.crearReserva(dto)).rejects.toThrow('La fecha de salida debe ser estrictamente posterior...');
+```
+
+**Código después:**
+```typescript
+await expect(reservasService.crearReserva(dto as any)).rejects.toThrow(
+  new BadRequestException('La fecha de salida debe ser estrictamente posterior a la fecha de ingreso.')
+);
+```
 
 ---
 
