@@ -53,14 +53,18 @@ await expect(reservasService.crearReserva(dto as any)).rejects.toThrow(
       const resultado = await reservasService.cancelarConMora(1);
 
       // Assert: Verificamos la reserva se cancelo y se aplicó la mora correctamente
+       const MONTO_MORA_ESPERADO = 50.00;
+
       expect(resultado.estado).toBe('Cancelada');
       expect(resultado.moraAplicada).toBe(true);
-      expect(resultado.montoMora).toBe(50.00);
+      expect(resultado.montoMora).toBe(MONTO_MORA_ESPERADO);
       expect(reservasRepositoryMock.guardarMora).toHaveBeenCalledWith(
         1,
-        50.00,
+        MONTO_MORA_ESPERADO,
         expect.any(Date)
       );
+
+
     });
   });
 });
