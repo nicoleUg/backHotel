@@ -83,7 +83,7 @@ export function calcularTotalConDescuento(dias: number, precioPorDia: number): n
 
 ---
 
-**Commit 3 — Refactor** [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f):
+**Commit 3 — Refactor** [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136):
 ```
 refactor: [HU-08] limpiar y extraer limites de descuento a constantes en precio.utils
 ```
@@ -108,7 +108,73 @@ export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: num
 
 ### Ciclo TDD — Prueba 2
 
-> Mismo formato. Incluir al menos 3 ciclos TDD completos.
+**HU:** HU: [HU-09] Cobro por Personas Extra
+> Como recepcionista quiero que el sistema calcule automáticamente un cobro adicional si la cantidad de huéspedes supera la capacidad base de la habitación, sin exceder el límite máximo.
+
+**CA elegido:**Si se registran más personas que la capacidad base, el sistema cobrará 20.00 bolivianos por cada persona adicional. Si no la supera, el cobro extra es 0.
+
+**Commit 1 — Rojo** [`a53374e`](https://github.com/nicoleUg/backHotel/commit/a53374ef3eea9d4287ade7a5191d370e31a47b61):
+```
+test: [HU-09] agregar test para cobro de huespedes adicionales
+```
+Test escrito (sin el código que lo pase aún):
+```typescript
+
+describe('calcularCobroPersonasExtra', () => {
+  it('debe cobrar 20 bolivianos por cada persona extra sobre la capacidad base', () => {
+    expect(calcularCobroPersonasExtra(4, 2)).toBe(40);
+    expect(calcularCobroPersonasExtra(2, 2)).toBe(0);
+  });
+});
+```
+
+> Captura del test fallando o error de compilación:
+
+![Test rojo](capturas/hotel-tdd2-rojo.png)
+
+---
+
+**Commit 2 — Verde** [`4020710`](https://github.com/nicoleUg/backHotel/commit/40207103cee47e4caf5a3574ba5102e4fcfc7611):
+```
+test: [HU-09] agregar test para cobro de huespedes adicionales
+```
+Código mínimo para hacer pasar el test:
+``` typescript
+export function calcularTotalConDescuento(dias: number, precioPorDia: number): number {
+  const total = dias * precioPorDia;
+  if (dias >= 7) {
+    return total - (total * 0.10);
+  }
+  return total;
+}
+```
+
+> Captura del test pasando:
+
+![Test verde](capturas/hotel-tdd1-verde.png)
+
+---
+
+**Commit 3 — Refactor** [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136):
+```
+refactor: [HU-08] limpiar y extraer limites de descuento a constantes en precio.utils
+```
+Cambios aplicados:
+``` typescript
+const LIMITE_DIAS_DESCUENTO = 7;
+const TASA_DESCUENTO = 0.10;
+
+export function calcularTotalConDescuento(diasEstadia: number, tarifaDiaria: number): number {
+  const totalBase = diasEstadia * tarifaDiaria;
+  return diasEstadia >= LIMITE_DIAS_DESCUENTO 
+    ? totalBase * (1 - TASA_DESCUENTO) 
+    : totalBase;
+}
+```
+
+> Captura del test aún pasando después del refactor:
+
+![Test post-refactor](capturas/hotel-tdd1-refactor.png)
 
 ---
 
