@@ -227,7 +227,7 @@ export function calcularRecargoLateCheckout(horasRetraso: number, tarifaBase: nu
 
 ---
 
-**Commit 3 — Refactor** [`5099f44`](https://github.com/nicoleUg/backHotel/commit/5099f44f2e5d5b815e1219580e03a1506c8bec52):
+**Commit 3 — Refactor** [`93cee40`](https://github.com/nicoleUg/backHotel/commit/93cee40d38684bb5680f46a4f874340b46401263):
 ```
 refactor: [HU-10] extraer limites de horas y tarifa por hora a constantes
 ```
@@ -305,7 +305,7 @@ Mínimo 3 nuevos (adicionales a los del EC2).
 |---|---|---|---|---|
 | 1 | [HU-08] Descuento Larga Estadía | Dado días de estadía / Cuando son >= 7 / Entonces descuenta 10% | calcularTotalConDescuento_EstadiaLarga_AplicaDescuento | [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136) |
 | 2 | [HU-09] Cobro por Personas Extra | Dado nro personas / Cuando supera base / Entonces cobra 20bs por extra | calcularCobroPersonasExtra_ExcedeBase_CobraDiferencia | [`5099f44`](https://github.com/nicoleUg/backHotel/commit/5099f44f2e5d5b815e1219580e03a1506c8bec52) |
-| 3 | [HU-10] Recargo por Late Check-out | Dado horas retraso / Cuando es > 4 / Entonces cobra noche completa | calcularRecargoLateCheckout_RetrasoMayorA4_CobraDiaCompleto| [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) |
+| 3 | [HU-10] Recargo por Late Check-out | Dado horas retraso / Cuando es > 4 / Entonces cobra noche completa | calcularRecargoLateCheckout_RetrasoMayorA4_CobraDiaCompleto| [`93cee40`](https://github.com/nicoleUg/backHotel/commit/93cee40d38684bb5680f46a4f874340b46401263) |
 
 ### Cadena 1 — [HU-08] Descuento por Larga Estadía
 
@@ -365,15 +365,15 @@ it('debe cobrar 20 bolivianos por cada persona extra sobre la capacidad base', (
 
 **Prueba que valida este CA:**
 ```typescript
-it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
+it('debe cobrar la tarifa de un dia completo si el retraso supera el limite de horas', () => {
     // Arrange
-    const diasEstadia = 7;
-    const precioBase = 100;
-    
+    const horasTarde = 5;
+    const precioHabitacion = 100;
+
     // Act
-    const totalPagar = calcularTotalConDescuento(diasEstadia, precioBase);
-    
+    const recargoGenerado = calcularRecargoLateCheckout(horasTarde, precioHabitacion);
+
     // Assert
-    expect(totalPagar).toBe(630);
+    expect(recargoGenerado).toBe(100);
 });
 ```

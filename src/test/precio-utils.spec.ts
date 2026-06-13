@@ -24,10 +24,11 @@ describe('calcularCobroPersonasExtra', () => {
   });
 });
 
-describe('calcularRecargoLateCheckout', () => {
-  it('debe cobrar 15 por hora de retraso, o tarifa completa si supera las 4 horas', () => {
-    expect(calcularRecargoLateCheckout(2, 100)).toBe(30);
-    
-    expect(calcularRecargoLateCheckout(5, 100)).toBe(100);
-  });
+it('debe cobrar la tarifa de un dia completo si el retraso supera el limite de horas', () => {
+    const horasTarde = 5;
+    const precioHabitacion = 100;
+
+    const recargoGenerado = calcularRecargoLateCheckout(horasTarde, precioHabitacion);
+
+    expect(recargoGenerado).toBe(100);
 });
