@@ -1,5 +1,6 @@
 import { calcularTotalConDescuento } from '../utils/precio.utils';
 import { calcularCobroPersonasExtra } from '../utils/precio.utils';
+import { calcularRecargoLateCheckout } from '../utils/precio.utils';
 
 describe('calcularTotalConDescuento', () => {
   it('debe aplicar un 10% de descuento si la estadia es de 7 o mas dias', () => {
@@ -20,5 +21,13 @@ describe('calcularCobroPersonasExtra', () => {
     const cobroAdicional = calcularCobroPersonasExtra(totalPersonas, capacidadBase);
 
     expect(cobroAdicional).toBe(40);
+  });
+});
+
+describe('calcularRecargoLateCheckout', () => {
+  it('debe cobrar 15 por hora de retraso, o tarifa completa si supera las 4 horas', () => {
+    expect(calcularRecargoLateCheckout(2, 100)).toBe(30);
+    
+    expect(calcularRecargoLateCheckout(5, 100)).toBe(100);
   });
 });

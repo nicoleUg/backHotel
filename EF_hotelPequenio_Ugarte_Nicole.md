@@ -154,7 +154,7 @@ export function calcularCobroPersonasExtra(personas: number, capacidad: number):
 
 ---
 
-**Commit 3 — Refactor** [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136):
+**Commit 3 — Refactor** [`5099f44`](https://github.com/nicoleUg/backHotel/commit/5099f44f2e5d5b815e1219580e03a1506c8bec52):
 ```
 refactor: [HU-09] limpiar y usar constante para tarifa de persona extra y funcion math.max
 ```
@@ -178,7 +178,65 @@ export function calcularCobroPersonasExtra(personasRegistradas: number, capacida
 
 ### Ciclo TDD — Prueba 3
 
-> Mismo formato.
+**HU:** HU: [HU-10] Recargo por Late Check-out
+> Como recepcionista quiero que el sistema calcule automáticamente un recargo si el huésped entrega la habitación después de la hora límite, para compensar el retraso en la limpieza.
+
+**CA elegido:**Si el retraso es de 1 a 4 horas, se cobra 15bs por cada hora. Si el retraso es mayor a 4 horas, el sistema cobra automáticamente el equivalente a una noche completa de tarifa base.
+
+**Commit 1 — Rojo** [`874b718`](https://github.com/nicoleUg/backHotel/commit/874b718b420f081068aa1d8318e8118c17c611c3):
+```
+test: [HU-10] agregar test para calculo de recargo por late check-out
+```
+Test escrito (sin el código que lo pase aún):
+```typescript
+describe('calcularRecargoLateCheckout', () => {
+  it('debe cobrar 15 por hora de retraso, o tarifa completa si supera las 4 horas', () => {
+    expect(calcularRecargoLateCheckout(2, 100)).toBe(30);
+    
+    expect(calcularRecargoLateCheckout(5, 100)).toBe(100);
+  });
+});
+```
+
+> Captura del test fallando o error de compilación:
+
+![Test rojo](capturas/hotel-tdd3-rojo.png)
+
+---
+
+**Commit 2 — Verde** [`524408b`](https://github.com/nicoleUg/backHotel/commit/524408b909f7733c6c4dc44f41d9c936ad2cb5f4):
+```
+feat: [HU-09] implementar calcularCobroPersonasExtra
+```
+Código mínimo para hacer pasar el test:
+``` typescript
+export function calcularCobroPersonasExtra(personas: number, capacidad: number): number {
+  if (personas > capacidad) {
+    return (personas - capacidad) * 20;
+  }
+  return 0;
+}
+```
+
+> Captura del test pasando:
+
+![Test verde](capturas/hotel-tdd2-verde.png)
+
+---
+
+**Commit 3 — Refactor** [`5099f44`](https://github.com/nicoleUg/backHotel/commit/5099f44f2e5d5b815e1219580e03a1506c8bec52):
+```
+refactor: [HU-09] limpiar y usar constante para tarifa de persona extra y funcion math.max
+```
+Cambios aplicados:
+```typescript
+const TARIFA_PERSONA_EXTRA = 20.00;
+
+export function calcularCobroPersonasExtra(personasRegistradas: number, capacidadBase: number): number {
+  const personasExtra = Math.max(0, personasRegistradas - capacidadBase);
+  return personasExtra * TARIFA_PERSONA_EXTRA;
+}
+```
 
 ---
 
@@ -235,8 +293,8 @@ Mínimo 3 nuevos (adicionales a los del EC2).
 | # | Historia de Usuario | Criterio de Aceptación | Prueba que valida ese CA | Commit |
 |---|---|---|---|---|
 | 1 | [HU-08] Descuento Larga Estadía | Dado días de estadía / Cuando son >= 7 / Entonces descuenta 10% | calcularTotalConDescuento_EstadiaLarga_AplicaDescuento | [`92bfa33`](https://github.com/nicoleUg/backHotel/commit/92bfa33689f557b3d2c54b90dc8558bb98c64136) |
-| 2 | [HU-09] Cobro por Personas Extra | Dado nro personas / Cuando supera base / Entonces cobra 20bs por extra | calcularCobroPersonasExtra_ExcedeBase_CobraDiferencia | [`b2c3d4e`](https://github.com/usuario/repo/commit/b2c3d4e) |
-| 3 | [HU título] | [Dado/Cuando/Entonces] | [NombrePrueba_Escenario_Resultado] | [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) |
+| 2 | [HU-09] Cobro por Personas Extra | Dado nro personas / Cuando supera base / Entonces cobra 20bs por extra | calcularCobroPersonasExtra_ExcedeBase_CobraDiferencia | [`5099f44`](https://github.com/nicoleUg/backHotel/commit/5099f44f2e5d5b815e1219580e03a1506c8bec52) |
+| 3 | [HU-10] Recargo por Late Check-out | Dado horas retraso / Cuando es > 4 / Entonces cobra noche completa | calcularRecargoLateCheckout_RetrasoMayorA4_CobraDiaCompleto| [`c3d4e5f`](https://github.com/usuario/repo/commit/c3d4e5f) |
 
 ### Cadena 1 — [HU-08] Descuento por Larga Estadía
 
@@ -286,13 +344,13 @@ it('debe cobrar 20 bolivianos por cada persona extra sobre la capacidad base', (
 ```
 ---
 
-### Cadena 3 — [Nombre HU]
+### Cadena 3 — [HU-10] Recargo por Late Check-out
  
 **Historia de Usuario:**
-> Como administrador quiero aplicar un descuento automático del 10% sobre la tarifa total para las reservas de 7 noches o más como incentivo a estadías largas.
+> Como recepcionista quiero que el sistema calcule automáticamente un recargo si el huésped entrega la habitación después de la hora límite, para compensar el retraso en la limpieza.
 
 **Criterio de Aceptación elegido:**
-> Dada una reserva procesada / Cuando se constata que la cantidad de noches es de 7 o más / Entonces la función retorna el costo total menos el 10% de descuento.
+> Dado el registro de salida del huésped (Check-out) / Cuando se reporta un retraso en la entrega de la habitación mayor a 4 horas / Entonces el sistema invalida el cobro por horas y aplica un recargo equivalente a una (1) noche de tarifa completa.
 
 **Prueba que valida este CA:**
 ```typescript
